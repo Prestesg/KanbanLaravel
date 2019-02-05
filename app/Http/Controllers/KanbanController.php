@@ -27,7 +27,11 @@ class KanbanController extends Controller
 
     public function create(Request $request)
     {
+	if($request->id){
+	$novo_card = Cards::where('id_card', $request->id)->first();
+	}else{
         $novo_card = new Cards;
+	}
         $novo_card->id_curso = ($request->tipo == 1)?$request->curso:0;
         $novo_card->id_disciplina = $request->disciplina;
         $novo_card->ano = $request->ano;
@@ -42,6 +46,42 @@ class KanbanController extends Controller
             $nova_rel_prof->id_professor = (int) $professor;
             $nova_rel_prof->save();
         }
-        return $novo_card;
+	return response()->json(['ok' => 'ok']);
+        //return ['success' => true, 'message' => 'New user created !!'];
     }
+
+    public function mover (Request  $request)
+    {
+	$card_mover = Cards::where('id_card', $request->id)
+               ->first();
+	if($card_mover->processo == 1){
+		if(empty($card_mover->link_pdf) and empty($card_mover->link_video)){
+			return $card_mover;
+		}
+	}else{
+	                if(empty($card_mover->link_pdf) or empty($card_mover->link_video)){
+			return $card_mover;
+                }
+	}
+	$card_mover->processo += 1;
+	$card_mover->save();
+	return $card_mover;
+    }
+    public function voltar(Request $request){
+	        $card_voltar = Cards::where('id_card', $request->id)
+               ->first();
+	$card_voltar->processo -= 1;
+	$card_voltar->save();
+    }
+
+    public function editar(Request $request){
+        $card_edit = Cards::where('id_card', $request->id)->first();
+	$card_edit->id_curso = ($request->tipo == 1)?$request->curso:0;
+        $card_edit->id_disciplina = $request->disciplina;
+        $card_edit->ano = $request->ano;
+        $card_edit->processo = 1;
+        $card_edit->link_pdf = (isset($request->material_apostila))?'teste.mp4':'';
+        $card_edit->link_video = (isset($request->material_video))?'teste.pdf':'';
+        $card_edit->save();	
+    }    
 }

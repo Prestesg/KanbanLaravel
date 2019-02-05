@@ -9,12 +9,12 @@ class Cards extends Model
 {
     protected $table = 'card_kanban';
     protected $primaryKey = "id_card";
-    protected $fillable = [ 'processo',
-                            'id_curso',
+    protected $fillable = [ 'id_curso',
                             'id_disciplina',
                             'link_pdf',
                             'link_video',
-                            'ano'];
+                            'ano',
+			    'processo'];
     public $timestamps = false;
     
     /**
@@ -23,7 +23,16 @@ class Cards extends Model
       */
     public function curso()
     {
-        return $this->belongsTo('App\Cursos', 'id_curso', 'id');
+        return $this->belongsTo('App\Cursos','id_curso');
+    }
+
+    /**
+      * Função de relação de tabelas usando métodos de Active Record
+      * @return Object Retorna objeto relacional.
+      */
+    public function disciplina()
+    {
+        return $this->belongsTo('App\Disciplinas', 'id_disciplina');
     }
 
     /**
@@ -32,6 +41,6 @@ class Cards extends Model
       */
     public function relprof()
     {
-        return $this->hasMany(CardProfessor::class, 'id_card');
+        return $this->belongsToMany('App\Professores','card_professores','id_card','id_professor');
     }
 }

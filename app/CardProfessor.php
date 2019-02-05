@@ -19,6 +19,6 @@ class CardProfessor extends Model
       */
     public function professor()
     {
-        return $this->hasMany(Professores::class, 'id_professor');
+        return $this->belongsTo('App\Professores', 'id_professor');
     }
 }

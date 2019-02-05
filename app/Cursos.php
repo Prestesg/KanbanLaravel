@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Cards;
 
 class Cursos extends Model
 {
@@ -17,6 +18,6 @@ class Cursos extends Model
      */
     public function cards()
     {
-        return $this->hasMany(Cards::class, 'id_curso');
+        return $this->hasMany('App\Cards','id_curso','id');
     }
 }
