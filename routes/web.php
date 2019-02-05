@@ -24,3 +24,18 @@ Route::post('/kanban/create', [
     'as' => 'page.kanban.create',
     'uses' => 'KanbanController@create'
 ]);
+
+Route::post('/kanban/mover', [
+    'as' => 'page.kanban.mover',
+    'uses' => 'KanbanController@mover'
+]);
+
+Route::post('/kanban/voltar', [
+    'as' => 'page.kanban.voltar',
+    'uses' => 'KanbanController@voltar'
+]);
+
+Route::post('/kanban/editar', [
+    'as' => 'page.kanban.editar',
+    'uses' => 'KanbanController@editar'
+]);
